@@ -7,11 +7,22 @@ export default function FormInput({
   onChange,
   type = "text",
   options,
+  placeholder,
+  disabled,
 }) {
   const inputVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  const inputClassName = `
+    p-2 w-full rounded-lg 
+    ${
+      disabled
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+        : "bg-white text-black"
+    }
+  `;
 
   return (
     <motion.div
@@ -21,13 +32,14 @@ export default function FormInput({
       variants={inputVariants}
       transition={{ duration: 0.5 }}
     >
-      <label className="font-bold text-lg text-primary-content">{label}</label>
+      <label className="font-bold text-lg text-amber-800">{label}</label>
       {type === "select" ? (
         <motion.select
           name={name}
           value={value}
           onChange={onChange}
-          className="p-2 w-full"
+          className={inputClassName}
+          disabled={disabled}
           whileFocus={{ scale: 1.05 }}
         >
           {options.map((option) => (
@@ -42,7 +54,9 @@ export default function FormInput({
           name={name}
           value={value}
           onChange={onChange}
-          className="p-2 w-full"
+          placeholder={placeholder}
+          disabled={disabled}
+          className={inputClassName}
           whileFocus={{ scale: 1.05 }}
         />
       )}

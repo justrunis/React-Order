@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 * {
-  font-family: "Playwrite DE Grund", cursive, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 body {
-  background-image: url(http://transparenttextures.com/patterns/cubes.png);
+  background-image: url(https://media.istockphoto.com/id/506784248/vector/yummy-cupcakes-seamless-pattern.jpg?s=612x612&w=0&k=20&c=Unssm-3wXogjaN0E2XhrBd6LiNOGFq75Vd7kjs3ygzM=);
+  background-color: #FFB3B3;
 }

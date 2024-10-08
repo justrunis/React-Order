@@ -15,9 +15,27 @@ export default function InputForm() {
   const [loading, setLoading] = useState(false);
 
   const formFields = [
-    { label: "Order ID", name: "orderId", type: "text" },
-    { label: "Order Link", name: "orderLink", type: "text" },
-    { label: "Price", name: "price", type: "number" },
+    {
+      label: "Order ID",
+      name: "orderId",
+      type: "text",
+      placeholder: "Generated ID",
+      disabled: true, // Disable input field for Order ID to prevent user error
+    },
+    {
+      label: "Order Link",
+      name: "orderLink",
+      type: "text",
+      placeholder: "Order URL",
+      required: true, // Make this field required
+    },
+    {
+      label: "Price",
+      name: "price",
+      type: "number",
+      placeholder: "0.00€",
+      required: true, // Make this field required
+    },
     {
       label: "Status",
       name: "status",
@@ -45,9 +63,37 @@ export default function InputForm() {
     setFormData(newFormData);
   };
 
+  // Validation function
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.orderId) {
+      errors.push("Order ID is required.");
+    } else if (isNaN(formData.orderId)) {
+      errors.push("Order ID must be a number.");
+    }
+    if (!formData.orderLink || formData.orderLink.length < 10) {
+      errors.push("Order Link must be at least 10 characters long.");
+    }
+    if (!formData.price || formData.price <= 0) {
+      errors.push("Price must be a positive number.");
+    } else if (isNaN(formData.price)) {
+      errors.push("Price must be a number.");
+    }
+    return errors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+
+    const errors = validateForm();
+    if (errors.length > 0) {
+      setLoading(false);
+      errors.forEach((error) => toast.error(error));
+      return; // Stop form submission if there are errors
+    }
+
+    // Simulating form submission
     setTimeout(() => {
       clearInputs();
       setLoading(false);
@@ -65,8 +111,8 @@ export default function InputForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-primary rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-primary-content text-center mb-4">
+    <div className="max-w-md mx-auto p-6 bg-blue-200 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-amber-800 text-center mb-4">
         Order Form
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -76,7 +122,9 @@ export default function InputForm() {
             label={field.label}
             name={field.name}
             value={formData[field.name]}
+            placeholder={field.placeholder}
             onChange={handleChange}
+            disabled={field.disabled}
             type={field.type}
             options={field.options}
           />
@@ -84,18 +132,19 @@ export default function InputForm() {
         {loading && <LoadingIndicator />}
         <div className="flex justify-between">
           <Button
-            className="bg-success text-success-content p-2 rounded-lg flex-1 mr-2"
+            className="bg-green-700 text-white p-2 rounded-lg flex-1 mr-2"
             type="submit"
             disabled={loading}
           >
             Submit
           </Button>
           <Button
-            className="bg-warning text-warning-content p-2 rounded-lg flex-1 ml-2"
+            className="bg-yellow-500 text-white p-2 rounded-lg flex-1 ml-2"
             onClick={clearInputs}
             disabled={loading}
+            type="button"
           >
-            Clear
+            Reset
           </Button>
         </div>
       </form>
